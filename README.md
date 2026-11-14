@@ -1,61 +1,35 @@
-# AzenView 🖥️
+# AzenView 🖥️ — ARCHIVED
 
-A one-click **Task View button for KDE Plasma** — a real Plasma widget
-(plasmoid) you can pin to the panel: click it and KWin's built-in
-**Overview** effect pops up, exactly like pressing `Meta+W` and just like the
-Windows task-view button.
+> ⚠️ **This project is archived and does NOT work.**
+> The repository is kept for reference only. Please do not expect it to run.
 
-> Plasma 6 plasmoid (QML) · triggers KWin over D-Bus · no daemons, tiny
+---
 
-## ✨ What it does
+AzenView was an attempt at a Windows-Task-View-style button for KDE Plasma:
+a panel widget that would open a virtual-desktop overview and let you switch
+desktops with one click.
 
-KDE Plasma already ships a full task-view (the *Overview* effect): it shows
-every virtual desktop and all their windows, lets you **click a desktop to
-switch**, **click a window to focus** it, and **drag windows across desktops**.
+## What was tried
 
-AzenView is the button for it — one click toggles the Overview open/closed,
-ready to be pinned right next to the search box like on Windows.
+| Version | Approach | Result |
+| --- | --- | --- |
+| v0.1.0 | Custom PyQt6 overlay with desktop cards and a window-layout preview | Desktop switching did not work reliably |
+| v0.2.0 | Trigger KWin's built-in **Overview** effect via D-Bus (`toggleEffect("overview")`) | Trigger worked, but the `.desktop` app could not be added through the panel's "Add Widgets" dialog |
+| v0.3.x | Converted to a real Plasma plasmoid (`com.azen.azenview`) | plasmashell (Plasma 6.8) rejected the widget with "unsupported Plasma version" and this was never resolved |
 
-## 📦 Install & pin to the panel
+The project was abandoned on 2026-11-14.
 
-```bash
-cd ~/Desktop/azenview
-./install.sh      # installs the plasmoid + icon + app menu entry (no sudo)
-```
+## Use the built-in features instead
 
-Then: right-click the panel → **Edit Panel** → **Add Widgets** → search
-**AzenView** → add it and drag it next to the search box.
+KDE Plasma already provides everything this project wanted:
 
-## 🛠️ How it works
+- **`Meta+W`** — open the Overview (all virtual desktops and windows, click to switch)
+- **`Ctrl+F1` / `Ctrl+F2`** — switch directly to desktop 1 / 2
+- **System Settings → Desktop Effects → Overview** — customize its look and animation
+- **System Settings → Workspace → Hot Corners** — trigger Overview from a screen corner
 
-The plasmoid button runs:
+## Code
 
-```
-qdbus6 org.kde.KWin /Effects org.kde.kwin.Effects.toggleEffect overview
-```
-
-If Overview is disabled (System Settings → Desktop Effects → Overview), turn
-it on — the widget also ships a standalone fallback (`run.sh`) that reports
-problems with a dialog.
-
-## 📁 Project structure
-
-```
-azenview/
-├── plasmoid/                # The Plasma widget (this is the main thing)
-│   ├── metadata.json        # KPackage metadata (id com.azen.azenview)
-│   └── contents/ui/main.qml # Panel button → toggleEffect("overview")
-├── main.py                  # Standalone fallback (CLI / app menu entry)
-├── run.sh / install.sh
-├── tools/make_icon.py       # Icon generator (two offset squares, ~75% overlap)
-├── assets/                  # azenview.png + hicolor multi-size icons
-└── azenview/
-    ├── __init__.py          # App name & version
-    └── kwin.py              # KWin D-Bus backend (Overview trigger)
-```
-
-## 🎨 Icon
-
-Two equal rounded squares on a blue-purple gradient: the top one offset to the
-top-right with ~75% overlap, styled like a little window card. Regenerate with
-`python3 tools/make_icon.py` and re-run `./install.sh`.
+The source remains in this repository for reference:
+`plasmoid/` (QML widget), `main.py` (standalone D-Bus trigger),
+`azenview/kwin.py` (KWin D-Bus helpers), `tools/make_icon.py` (icon generator).
