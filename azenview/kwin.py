@@ -100,6 +100,45 @@ class KWinBackend(QObject):
         self._set_property("current", desktop_id)
 
     # ------------------------------------------------------------------
+    def toggle_overview(self) -> bool:
+        """弹出/收起 KWin 自带的 Overview（任务视图）。
+
+        优先使用 Effects.toggleEffect("overview")；失败时回退到
+        触发 kglobalaccel 的 "Overview" 全局快捷键（等同按 Meta+W）。
+        返回是否成功。
+        """
+        iface = QDBusInterface(
+            "org.kde.KWin", "/Effects", "org.kde.kwin.Effects", self.bus
+        )
+        if not iface.isValid():
+            return False
+
+        # 确保效果已加载
+        reply = iface.call("isEffectLoaded", "overview")
+        if reply.errorName() or not reply.arguments():
+            return False
+        if not reply.arguments()[0]:
+            load = iface.call("loadEffect", "overview")
+            if load.errorName():
+                return False
+
+        toggle = iface.call("toggleEffect", "overview")
+        if not toggle.errorName():
+            return True
+
+        # 回退：kglobalaccel 触发 Overview 快捷键
+        kglobal = QDBusInterface(
+            "org.kde.kglobalaccel",
+            "/component/kwin",
+            "org.kde.kglobalaccel.Component",
+            self.bus,
+        )
+        if kglobal.isValid():
+            invoke = kglobal.call("invokeShortcut", "Overview")
+            return not invoke.errorName()
+        return False
+
+    # ------------------------------------------------------------------
     def windows(self) -> list[dict]:
         """所有窗口的原始信息列表。
 

@@ -26,7 +26,7 @@ cat > "$APP_BASE/azenview.desktop" <<EOF
 Type=Application
 Name=AzenView
 GenericName=Task View
-Comment=AzenView - virtual desktop task view and switcher
+Comment=AzenView - one-click KDE Overview (task view) button
 Exec=$PROJECT_DIR/run.sh
 Icon=azenview
 Terminal=false

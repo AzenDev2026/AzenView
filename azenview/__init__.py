@@ -1,11 +1,11 @@
-"""AzenView — KDE 任务视图：虚拟桌面预览与一键切换。
+"""AzenView — 任务栏按钮，一键唤起 KDE Plasma 自带的 Overview（任务视图）。
 
-类似 Windows 的任务视图（Task View）：弹出所有虚拟桌面的预览卡片，
-点击卡片即可切换到对应桌面。
+点击面板上的 AzenView 图标，即可弹出/收起 KWin Overview：
+看到所有虚拟桌面和窗口、点击桌面切换、拖拽窗口跨桌面——与按 Meta+W 完全一致。
 
-技术：Python + PyQt6，通过 KWin D-Bus 接口
-（org.kde.KWin.VirtualDesktopManager / org.kde.KWin）获取与切换虚拟桌面。
+实现：通过 D-Bus 调用 org.kde.KWin /Effects 的 toggleEffect("overview")，
+失败时回退到 kglobalaccel 的 "Overview" 全局快捷键。
 """
 
 APP_NAME = "AzenView"
-APP_VERSION = "0.1.0"
+APP_VERSION = "0.2.0"
