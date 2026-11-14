@@ -1,17 +1,26 @@
 {
+    "KPackageStructure": "Plasma/Applet",
     "KPlugin": {
         "Id": "com.azen.azenview",
         "Name": "AzenView",
         "Name[zh_CN]": "Azen 任务视图",
         "Description": "One-click button that toggles KWin Overview (task view), like the Windows task-view button",
         "Description[zh_CN]": "一键唤起/收起 KWin Overview（任务视图），类似 Windows 的任务视图按钮",
-        "Icon": "azenview",
-        "Version": "0.3.0",
-        "License": "GPL-3.0",
         "Category": "Windows and Tasks",
+        "Icon": "azenview",
+        "Version": "0.3.1",
+        "License": "GPL-3.0",
+        "EnabledByDefault": false,
+        "Authors": [
+            {
+                "Name": "AzenDev2026"
+            }
+        ],
         "Website": "https://github.com/AzenDev2026/AzenView"
     },
-    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-API-Minimum-Version": "6.0",
     "X-Plasma-MainScript": "ui/main.qml",
-    "KPackageStructure": "Plasma/Applet"
+    "X-KDE-PluginInfo-Name": "AzenView",
+    "X-KDE-PluginInfo-Author": "AzenDev2026",
+    "X-KDE-PluginInfo-Version": "0.3.1"
 }
