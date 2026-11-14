@@ -1,0 +1,1 @@
+# Uses the system PyQt6 (Arch: sudo pacman -S python-pyqt6)
