@@ -32,24 +32,33 @@ def render(size: int) -> QImage:
     p.setBrush(QBrush(grad))
     p.drawRoundedRect(QRectF(4 * s, 4 * s, 504 * s, 504 * s), 118 * s, 118 * s)
 
-    # ---- 后窗口（白色半透明，偏右上） ----
-    p.setPen(Qt.PenStyle.NoPen)
-    p.setBrush(QColor(255, 255, 255, 120))
-    p.drawRoundedRect(QRectF(172 * s, 96 * s, 244 * s, 300 * s), 56 * s, 56 * s)
+    # ---- 两个等大的方块，上方向右上偏移，重叠约 75% ----
+    # 边长 280；偏移 d = 280 × (1 − √0.75) ≈ 40
+    side = 280.0
+    d = 40.0
+    ax, ay = 96.0, 161.0                    # 下方块（左）
+    bx, by = ax + d, ay - d                 # 上方块（右上偏移）
 
-    # ---- 前窗口（白色，偏左下，带内容线条） ----
+    # 下方块：白色半透明
+    p.setBrush(QColor(255, 255, 255, 125))
+    p.drawRoundedRect(QRectF(ax * s, ay * s, side * s, side * s), 60 * s, 60 * s)
+
+    # 上方块：白色实底 + 窗口内容线
     p.setBrush(QColor("#f4f6fa"))
-    p.drawRoundedRect(QRectF(96 * s, 142 * s, 244 * s, 300 * s), 56 * s, 56 * s)
+    p.drawRoundedRect(QRectF(bx * s, by * s, side * s, side * s), 60 * s, 60 * s)
 
-    # 前窗口的标题条与内容线
     p.setPen(QPen(QColor("#5a6b8c"), 16 * s))
-    p.drawLine(QPointF(130 * s, 184 * s), QPointF(306 * s, 184 * s))   # 标题线
+    p.drawLine(QPointF((bx + 34) * s, (by + 44) * s),
+               QPointF((bx + 226) * s, (by + 44) * s))          # 标题线
     p.setPen(QPen(QColor("#c3ccdb"), 14 * s))
-    p.drawLine(QPointF(130 * s, 236 * s), QPointF(306 * s, 236 * s))   # 内容线 1
+    p.drawLine(QPointF((bx + 34) * s, (by + 96) * s),
+               QPointF((bx + 246) * s, (by + 96) * s))          # 内容线 1
     p.setPen(QPen(QColor("#d4dae6"), 14 * s))
-    p.drawLine(QPointF(130 * s, 276 * s), QPointF(260 * s, 276 * s))   # 内容线 2（短）
+    p.drawLine(QPointF((bx + 34) * s, (by + 136) * s),
+               QPointF((bx + 190) * s, (by + 136) * s))         # 内容线 2（短）
     p.setPen(QPen(QColor("#e2e7ef"), 14 * s))
-    p.drawLine(QPointF(130 * s, 316 * s), QPointF(280 * s, 316 * s))   # 内容线 3
+    p.drawLine(QPointF((bx + 34) * s, (by + 176) * s),
+               QPointF((bx + 216) * s, (by + 176) * s))         # 内容线 3
 
     p.end()
     return img
